@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 const App = () => {
 	let response;
 	async function fetchData() {
@@ -13,9 +12,7 @@ const App = () => {
 	useEffect(
 		() => {
 			fetchData().then(res => {
-				console.log(res);
 				setBlockbuster(res.blockbuster_movies);
-				console.log(blockbuster);
 			});
 		},
 		[response]
@@ -26,7 +23,7 @@ const App = () => {
 			<h1>you have clicked {count} times!!</h1>
 			<button onClick={() => setCount(count + 1)}>Increment</button>
 			{blockbuster.map(movie => {
-				return <p>{movie.title}</p>;
+				return <p key={movie.title}>{movie.title}</p>;
 			})}
 		</div>
 	);
