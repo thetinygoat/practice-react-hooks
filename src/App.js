@@ -1,28 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () => {
+	let response;
+	async function fetchData() {
+		response = await fetch('http://moviemafia.herokuapp.com/home-page');
+		let data = await response.json();
+		return data;
+	}
+	const [count, setCount] = useState(0);
+	useEffect(() => {}, [response]);
+	const [blockbuster, setBlockbuster] = useState([]);
+	useEffect(
+		() => {
+			fetchData().then(res => {
+				console.log(res);
+				setBlockbuster(res.blockbuster_movies);
+				console.log(blockbuster);
+			});
+		},
+		[response]
+	);
+
+	return (
+		<div>
+			<h1>you have clicked {count} times!!</h1>
+			<button onClick={() => setCount(count + 1)}>Increment</button>
+			{blockbuster.map(movie => {
+				return <p>{movie.title}</p>;
+			})}
+		</div>
+	);
+};
 
 export default App;
